@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% include 'all_cdns.html' %}
+    <style>
+        /* Global Navbar Styling */
+        .navbar {
+            background: linear-gradient(90deg, #1e3c72, #2a5298); /* Gradient background */
+            padding: 12px 0; /* Add padding for height */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            transition: background-color 0.3s ease-in-out; /* Smooth background color transition */
+        }
+
+        .navbar:hover {
+            background: linear-gradient(90deg, #1e3c72, #2a5298, #4f94e2); /* Hover gradient */
+        }
+
+        /* Logo Styling */
+        .navbar-brand img {
+            height: 60px; /* Adjust the logo height */
+            width: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Glowing effect */
+            transition: all 0.4s ease-in-out; /* Smooth transition for hover effect */
+        }
+
+        /* Logo Styling */
+.navbar-brand img {
+    height: 60px; /* Adjust the logo height */
+    width: auto;
+    border-radius: 50%; /* Circular logo for a modern touch */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Glowing effect */
+    transition: all 0.4s ease-in-out; /* Smooth transition for hover effect */
+    margin-left: 20px; /* Add left margin to the logo */
+}
+
+
+        /* Navbar Links */
+        .navbar-nav .nav-link {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 'Roboto', sans-serif; /* Modern font */
+            color: #f8f9fa; /* Light color for links */
+            /* text-transform: uppercase; */
+            padding: 12px 20px;
+            transition: color 0.3s, background-color 0.3s ease-in-out;
+            letter-spacing: 1px;
+            font-family: sans-serif;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #3498db; /* Blue color on hover */
+            background-color: rgba(52, 152, 219, 0.2); /* Light background on hover */
+            border-radius: 4px;
+            color: black;
+        }
+
+        /* Center Align Navbar Items */
+        .navbar-collapse {
+            justify-content: center;
+        }
+
+        /* Navbar Toggler */
+        .navbar-toggler-icon {
+            background-color: #f39c12; /* Gold color for the hamburger icon */
+        }
+
+        /* Responsive Search Form */
+        .navbar .search-form {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .navbar .search-form input {
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            padding: 8px;
+            margin-right: 10px;
+            font-size: 14px;
+            width: 220px;
+        }
+
+        .navbar .search-form button {
+            background-color: #27ae60; /* Green for the search button */
+            border: none;
+            padding: 8px 15px;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .navbar .search-form button:hover {
+            background-color: #2ecc71; /* Lighter green on hover */
+        }
+
+        /* User Authentication Section */
+        .navbar .user-section {
+            color: #ecf0f1;
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .navbar .user-section a {
+            color: #ecf0f1;
+            margin-left: 15px;
+            font-size: 16px;
+            padding: 8px 16px;
+            background-color: #2980b9;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar .user-section a:hover {
+            color: #fff;
+            background-color: #3498db; /* Hover effect for login/logout */
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 767px) {
+            .navbar-nav {
+                flex-direction: column;
+                align-items: center; /* Center align items on small screens */
+            }
+
+            .navbar-nav .nav-link {
+                padding: 15px 20px; /* Adjust padding for smaller screens */
+            }
+
+            .navbar-brand img {
+                height: 50px; /* Smaller logo on mobile */
+            }
+
+            .navbar .search-form {
+                flex-direction: column; /* Stack search elements vertically */
+                margin-top: 10px;
+            }
+
+            .navbar .search-form input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark mb-1">
+        <!-- Brand with Logo -->
+        <a class="navbar-brand" >
+            <img class="ml-2" src="{% static 'logo.jpg' %}" alt="Logo">
+        </a>
+      
+        <!-- Toggler/collapsable Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'article_list' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create_article' %}">Create_Article</a>
+                </li>
+                <li class="nav-item search-form">
+                    <form method="GET" action="{% url 'article_list' %}">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search-item">
+                        <center>
+                        <button class="btn btn-success mt-1" type="submit">Search</button>
+                        </center>
+                    </form>
+                </li>
+            </ul>
+            <!-- User Authentication Links -->
+            <div class="user-section mt-2">
+                {% if request.user.is_authenticated %}
+                    <span>Welcome, <span style="color: #e74c3c;">{{ request.user }}</span></span>
+                    <a href="{% url 'logout_view' %}" class="btn btn-success ml-3">Logout</a>
+                {% else %}
+                    <a href="{% url 'userlogin' %}" class="btn btn-primary ml-3">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Include Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script> <!-- Popper.js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
+</body>
+</html>

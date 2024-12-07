@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% include 'all_cdns.html' %}
+    <style>
+       .article-card {
+    margin-bottom: 20px; /* Gap between rows */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Padding inside the card */
+    background-color: #0c79e7; /* Light background */
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: space-between; /* Space between items */
+    height: 100%; /* Allow dynamic height depending on content */
+}
+
+.card-body {
+    flex-grow: 1; /* Allow card body to grow and fill available space */
+}
+
+.card-footer {
+    margin-top: auto; /* Push the footer (button) to the bottom */
+}
+/* Allow the card body to grow */
+        
+    </style>
+</head>
+<body style="background-color: aqua;">
+    {% include 'navbar.html'%}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center mt-2" style="background-color: aliceblue; color: black;">
+              <br>  <h1> CAMP OF ARTICLES </h1><br>
+            </div>
+        </div>
+   
+        
+        {% if article %}
+            <div class="row">
+                <div class="offset-md-1 col-md-10">
+                    <div class="row">
+                        {% for i in article %}
+                        <div class="col-md-6 mt-4">
+                            <div class="article-card bg-dark text-light border-light shadow text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{% url 'article_used' i.id i.slug %}" class="text-light text-decoration-none">
+                                            <span style="color: violet;">{{ i.title }}</span>
+                                        </a>
+                                    </h5>
+                                    <p class="card-text text-muted" style="font-size: 14px;">{{ i.created_date }}</p>
+                                    <hr class="bg-secondary">
+                                    <p class="font-weight-bold">Author:</p>
+                                    <p class="text-warning">{{ i.author }}</p>
+                                    <hr class="bg-secondary">
+                                    <p class="font-weight-bold">Content:</p>
+                                    <p class="card-text" style="font-size: 16px;">{{ i.body|truncatewords:20 }}</p> <!-- Limit displayed content -->
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{% url 'article_used' i.id i.slug %}" class="btn btn-outline-light btn-sm">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <h1>MY FIRST TEMPLATES PAGE</h1>
+        {% endif %}
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="offset-md-5 col-md-3 mt-4">
+                <ul class="pagination">
+                    {% if article.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ article.previous_page_number }}">Previous</a></li>
+                    {% endif %}
+                
+                    {% for p in article.paginator.page_range %}
+                        {% if article.number == p %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                
+                    {% if article.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ article.next_page_number }}">Next</a></li>
+                    {% endif %}
+                </ul>
+                
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

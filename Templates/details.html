@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% include 'all_cdns.html' %}
+    <style>
+        /* Custom card styles */
+        .card-custom {
+            background-color: #f0f8ff; /* Alice Blue Background */
+            color: #2f4f4f; /* Dark Slate Gray text for good contrast */
+            border: 2px solid #d3d3d3; /* Silver border */
+            border-radius: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-custom:hover {
+            transform: scale(1.05); /* Slightly enlarge the card on hover */
+            border-color: #ff1493; /* Pink border on hover */
+            box-shadow: 0px 12px 20px rgba(255, 20, 147, 0.2); /* Glow effect with pinkish tint */
+        }
+
+        .card-header {
+            background-color: #ff1493; /* Pink header */
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.25rem;
+            text-align: center;
+        }
+
+        .card-body {
+            background-color: #f8f9fa; /* Light background for the body */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .card-body h5 {
+            color: #e60000; /* Red color for the article title */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-body h6 {
+            color: #696969; /* Dark Gray color for the subtitle */
+            font-weight: 600;
+        }
+
+        .card-body p {
+            color: #333333; /* Dark text for the content */
+            line-height: 1.6;
+        }
+
+        .like-button {
+            background: none;
+            border: none;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+
+        .like-button i {
+            font-size: 48px;
+            transition: color 0.3s ease;
+        }
+
+        .like-button.liked i {
+            color: #ff1493; /* Pink for liked state */
+        }
+
+        .like-button:not(.liked) i {
+            color: #c0c0c0; /* Silver for unliked state */
+        }
+
+        .no-articles {
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+            background-color: #ff6347; /* Tomato red background */
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.25rem;
+        }
+
+        .container-fluid {
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #ff1493; /* Pink title */
+        }
+    </style>
+</head>
+<body style="background-color: #f0f8ff;">
+    {% include 'navbar.html' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mt-3" style="font-size: 2.5rem; color: #ff1493; font-weight: bold;">
+                    Explore the Latest Articles and Insights
+                </h1>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="offset-md-3 col-md-6 text-center">
+                {% if articles %}
+                <!-- In details.html -->
+                    <div class="card-custom">
+                        <div class="card-header">
+                            Article Details
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ articles.title }}</h5>
+                            <h6 class="card-subtitle mb-2">
+                                <span style="font-weight: bold;">Author:</span> {{ articles.author }}
+                            </h6>
+                            <p>{{ articles.body }}</p>
+
+                            <!-- Display the number of likes -->
+                            <p style="font-weight: bold;">Likes: <span>{{ likes_count }}</span></p>
+
+                            <form method="POST" action="{% url 'like_article' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="article_id" value="{{ articles.id }}">
+                                <button type="submit" class="like-button {% if is_liked %}liked{% endif %}">
+                                    {% if is_liked %}
+                                    <i class="fa fa-heart"></i> <!-- Liked state -->
+                                    {% else %}
+                                    <i class="fa fa-heart"></i> <!-- Not liked state -->
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="no-articles">
+                        <h1>NO Articles Pages Found</h1>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
